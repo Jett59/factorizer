@@ -1,3 +1,5 @@
+use std::{io::stdin, time::Instant};
+
 fn find_pair_of_factors(n: i64, prime_factor_count: i64) -> (i64, i64) {
     let mut factor_1 = f64::powf(n as f64, 1.0 / prime_factor_count as f64).floor() as i64;
     let mut remainder = n % factor_1;
@@ -19,5 +21,19 @@ fn find_pair_of_factors(n: i64, prime_factor_count: i64) -> (i64, i64) {
 }
 
 fn main() {
-    println!("{:?}", find_pair_of_factors(23000, 2));
+    loop {
+        let mut input = String::new();
+        println!("Enter a number to find a pair of factors for:");
+        stdin().read_line(&mut input).unwrap();
+        let n = input.trim().parse::<i64>().unwrap();
+        println!("How many prime factors are in it? Just use 2 if you don't know; it will still find factors");
+        input.clear();
+        stdin().read_line(&mut input).unwrap();
+        let prime_factor_count = input.trim().parse::<i64>().unwrap();
+        let start = Instant::now();
+        let (factor_1, factor_2) = find_pair_of_factors(n, prime_factor_count);
+        let duration = start.elapsed();
+        println!("{n} = {factor_1}*{factor_2}");
+        println!("Found in {duration:?}");
+    }
 }
