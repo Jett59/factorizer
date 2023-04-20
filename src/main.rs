@@ -6,9 +6,12 @@ fn find_pair_of_factors(n: IBig, prime_factor_count: usize) -> (IBig, IBig) {
     let mut factor_1 = n.nth_root(prime_factor_count);
     let mut remainder = &n % &factor_1;
     let mut factor_2 = (n - &remainder) / &factor_1;
-    while !(&remainder % &factor_2).is_zero() {
+    loop {
         let reduced_remainder = &remainder % &factor_2;
-        let new_factor_1 = &factor_1 + remainder / &factor_2 + 1;
+        if reduced_remainder.is_zero() {
+            break;
+        }
+        let new_factor_1 = factor_1 + remainder / &factor_2 + 1;
         let new_factor_2 = &factor_2 - 1;
         // In the equations this was a bit different. This is because the equations assumed you went through each of the values of a (factor_1).
         // The main difference here is that a is replaced with factor_1 - 1. This simplifies to what we have below:
